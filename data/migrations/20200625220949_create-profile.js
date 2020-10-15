@@ -7,7 +7,7 @@ exports.up = (knex) => {
       table.string('first_name');
       table.string('last_name');
       table.timestamps(true, true);
-      table.boolean('is_groomer').defaultTo(false)
+      table.boolean('is_groomer').defaultTo(false);
     });
 };
 
