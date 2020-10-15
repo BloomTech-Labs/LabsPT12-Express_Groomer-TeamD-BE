@@ -173,7 +173,11 @@ router.post('/', authRequired, async (req, res) => {
               .status(200)
               .json({ message: 'profile created', profile: profile[0] })
           );
-        } else {
+        }
+        //else if (pf == undefined && groomer == true){
+
+        //}
+        else {
           res.status(400).json({ message: 'profile already exists' });
         }
       });

@@ -7,7 +7,7 @@ const profiles = [...new Array(5)].map((i, idx) => ({
   last_name: idx === 0 ? 'User' : `${faker.name.lastName()}`,
   is_groomer: false,
 }));
-
+//anything hello
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('profiles')
