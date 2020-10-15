@@ -175,8 +175,8 @@ router.post('/', authRequired, async (req, res) => {
           );
         }
         //else if (pf == undefined && groomer == true){
-                  
-              //} 
+
+        //}
         else {
           res.status(400).json({ message: 'profile already exists' });
         }
