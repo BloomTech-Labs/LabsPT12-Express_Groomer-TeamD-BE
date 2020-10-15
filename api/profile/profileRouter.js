@@ -12,24 +12,23 @@ const router = express.Router();
  *      required:
  *        - id
  *        - email
- *        - name
- *        - avatarUrl
+ *        - first_name
+ *        - last_name
  *      properties:
  *        id:
  *          type: string
  *          description: This is a foreign key (the okta user ID)
  *        email:
  *          type: string
- *        name:
+ *        first_name:
  *          type: string
- *        avatarUrl:
+ *        last_name:
  *          type: string
- *          description: public url of profile avatar
  *      example:
  *        id: '00uhjfrwdWAQvD8JV4x6'
  *        email: 'frank@example.com'
- *        name: 'Frank Martinez'
- *        avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/hermanobrother/128.jpg'
+ *        first_name: 'Frank'
+ *        last_name: 'Martinez'
  *
  * /profiles:
  *  get:
@@ -51,12 +50,14 @@ const router = express.Router();
  *              example:
  *                - id: '00uhjfrwdWAQvD8JV4x6'
  *                  email: 'frank@example.com'
- *                  name: 'Frank Martinez'
- *                  avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/hermanobrother/128.jpg'
+ *                  first_name: 'Frank'
+ *                  last_name: 'Martinez'
+ *                  is_groomer: false
  *                - id: '013e4ab94d96542e791f'
  *                  email: 'cathy@example.com'
- *                  name: 'Cathy Warmund'
- *                  avatarUrl: 'https://s3.amazonaws.com/uifaces/faces/twitter/geneseleznev/128.jpg'
+ *                  first_name: 'Cathy'
+ *                  last_name: 'Warmund'
+ *                  is_groomer: true
  *      401:
  *        $ref: '#/components/responses/UnauthorizedError'
  *      403:
