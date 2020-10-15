@@ -7,6 +7,7 @@ exports.up = async function (knex) {
       table.string('name');
       table.string('avatarUrl');
       table.timestamps(true, true);
+      table.boolean('is_groomer').defaultTo(false)
     });
   await knex.schema
     .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
