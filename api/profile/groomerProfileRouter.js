@@ -261,7 +261,7 @@ router.put('/:profile_id', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
     GroomerProfiles.findGroomerProByProID(req.profile.id)
-      .then((_) => {
+      .then(() => {
         GroomerProfiles.updateGroomerProByProID(req.profile.id, profile)
           .then((updated) => {
             res.status(200).json({
