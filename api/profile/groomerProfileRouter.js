@@ -285,4 +285,53 @@ router.put('/:profile_id', authRequired, function (req, res) {
   }
 });
 
+/**
+ * @swagger
+ * components:
+ *  parameters:
+ *    location_city:
+ *      name: id
+ *      in: path
+ *      description: City of the profiles being returned
+ *      required: true
+ *      example: "Los Angeles"
+ *      schema:
+ *        type: string
+ *
+ * /groomer_profile/:location_city:
+ *  get:
+ *    description: Find profiles by city
+ *    summary: Returns all profiles by city
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - groomer profile
+ *    parameters:
+ *      - $ref: '#/components/parameters/groomerProfileId'
+ *    responses:
+ *      200:
+ *        description: An array of groomer profile objects
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/groomer_profiles'
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        description: 'City not found'
+ */
+router.get('/:location_city', authRequired, function (req, res) {
+  GroomerProfiles.findByCity(location_city)
+    .then((profile) => {
+      if (profile) {
+        res.status(200).json(profile);
+      } else {
+        res.status(404).json({ error: 'City not found!' });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+});
+
 module.exports = router;
