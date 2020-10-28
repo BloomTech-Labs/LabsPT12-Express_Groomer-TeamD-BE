@@ -112,5 +112,3 @@ describe('groomer profiles router endpoints', () => {
     });
   });
 });
-
-

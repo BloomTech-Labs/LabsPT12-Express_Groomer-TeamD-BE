@@ -1,8 +1,12 @@
 const db = require('../../data/db-config');
 
 // Returning all groomer profiles
-const findAllGroomerPros = async () => {
-  return db('groomer_profiles');
+const findAllGroomerPros = async (queries = {}) => {
+  const query = db('groomer_profiles');
+  if (queries.location_city) {
+    query.where({ location_city: queries.location_city });
+  }
+  return query;
 };
 
 // To create a new groomer profile
@@ -16,16 +20,25 @@ const findGroomerProByProID = async (profile_id) => {
 };
 
 // To update a groomer's profile by profile ID
-const updateGroomerProByProID = async (profile_id, groomerProfile) => {
+const updateGroomerProByProID = async (id, groomerProfile) => {
   return db('groomer_profiles')
-    .where({ profile_id: profile_id })
+    .where({ id: id })
     .update(groomerProfile)
     .returning('*');
 };
 
 // To get Groomer Profile by location_city
-const findByCity = async (location_city) => {
-  return db('groomer_profiles').where({ location_city }).returning('*')
+const findByCity = async (queries = {}) => {
+  const query = db('groomer_profiles');
+  if (queries.location_city) {
+    query.where({ location_city: queries.location_city });
+  }
+  return query;
+};
+
+// Delete a groomer profile
+const remove = async (id) => {
+  return await db('groomer_profiles').where({ id }).del();
 };
 
 module.exports = {
@@ -33,5 +46,6 @@ module.exports = {
   updateGroomerProByProID,
   findAllGroomerPros,
   createGroomerPro,
-  findByCity
+  findByCity,
+  remove,
 };
