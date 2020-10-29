@@ -95,8 +95,11 @@ const router = express.Router();
  *        $ref: '#/components/responses/UnauthorizedError'
  */
 
-router.get('/', authRequired, function (req, res) {
-  GroomerProfiles.findAllGroomerPros()
+// router.get('/', authRequired, function (req, res) {
+router.get('/', function (req, res) {
+  const { location_city } = req.query;
+  console.log(location_city);
+  GroomerProfiles.findAllGroomerPros({ location_city })
     .then((groomerProfiles) => {
       res.status(200).json(groomerProfiles);
     })
@@ -142,8 +145,9 @@ router.get('/', authRequired, function (req, res) {
  *        description: 'Groomer profile not found'
  */
 
-router.get('/:profile_id', authRequired, function (req, res) {
-  const id = String(req.params.id);
+// router.get('/:profile_id', authRequired, function (req, res) {
+router.get('/:profile_id', function (req, res) {
+  const id = String(req.params.profile_id);
   GroomerProfiles.findGroomerProByProID(id)
     .then((profile) => {
       if (profile) {
@@ -193,12 +197,11 @@ router.get('/:profile_id', authRequired, function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-
 router.post('/', authRequired, async (req, res) => {
   const profile = req.body;
   if (profile) {
     try {
-      await GroomerProfiles.findGroomerProByProID(req.profile.id).then(
+      await GroomerProfiles.findGroomerProByProID(profile.profile_id).then(
         async (pf) => {
           if (pf == undefined) {
             //profile not found so lets insert it
@@ -256,13 +259,12 @@ router.post('/', authRequired, async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-
 router.put('/:profile_id', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
-    GroomerProfiles.findGroomerProByProID(req.profile.id)
+    GroomerProfiles.findGroomerProByProID(profile.id)
       .then(() => {
-        GroomerProfiles.updateGroomerProByProID(req.profile.id, profile)
+        GroomerProfiles.updateGroomerProByProID(profile.id, profile)
           .then((updated) => {
             res.status(200).json({
               message: 'groomer profile updated',
@@ -271,17 +273,66 @@ router.put('/:profile_id', authRequired, function (req, res) {
           })
           .catch((err) => {
             res.status(500).json({
-              message: `Could not update groomer profile '${req.profile.id}'`,
+              message: `Could not update groomer profile '${profile.id}'`,
               error: err.message,
             });
           });
       })
       .catch((err) => {
         res.status(404).json({
-          message: `Could not find groomer profile '${req.profile.id}'`,
+          message: `Could not find groomer profile '${profile.id}'`,
           error: err.message,
         });
       });
+  }
+});
+
+/**
+ * @swagger
+ * /groomer_profiles/{id}:
+ *  delete:
+ *    summary: Remove a groomer profile
+ *    security:
+ *      - okta: []
+ *    tags:
+ *      - groomer_profile
+ *    parameters:
+ *      - $ref: '#/components/parameters/profileId'
+ *    responses:
+ *      401:
+ *        $ref: '#/components/responses/UnauthorizedError'
+ *      404:
+ *        $ref: '#/components/responses/NotFound'
+ *      200:
+ *        description: A groomer profile object
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  description: A message about the result
+ *                  example: Groomer Profile '00uhjfrwdWAQvD8JV4x6' was deleted.
+ *                profile:
+ *                  $ref: '#/components/schemas/Groomer_Profile'
+ */
+
+router.delete('/:id', authRequired, function (req, res) {
+  const id = req.params.id;
+  try {
+    GroomerProfiles.findGroomerProByProID(id).then((profile) => {
+      GroomerProfiles.remove(id).then(() => {
+        res
+          .status(200)
+          .json({ message: `Profile '${id}' was deleted.`, profile: profile });
+      });
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: `Could not delete profile with ID: ${id}`,
+      error: err.message,
+    });
   }
 });
 

@@ -167,17 +167,12 @@ router.post('/', authRequired, async (req, res) => {
     try {
       await Profiles.findById(id).then(async (pf) => {
         if (pf == undefined) {
-          //profile not found so lets insert it
           await Profiles.create(profile).then((profile) =>
             res
               .status(200)
               .json({ message: 'profile created', profile: profile[0] })
           );
-        }
-        //else if (pf == undefined && groomer == true){
-
-        //}
-        else {
+        } else {
           res.status(400).json({ message: 'profile already exists' });
         }
       });
@@ -233,7 +228,7 @@ router.put('/', authRequired, function (req, res) {
           .then((updated) => {
             res
               .status(200)
-              .json({ message: 'profile created', profile: updated[0] });
+              .json({ message: 'profile updated', profile: updated[0] });
           })
           .catch((err) => {
             res.status(500).json({
