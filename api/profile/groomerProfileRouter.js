@@ -1,5 +1,5 @@
 const express = require('express');
-// const authRequired = require('../middleware/authRequired');
+const authRequired = require('../middleware/authRequired');
 const GroomerProfiles = require('./groomerProfileModel');
 const router = express.Router();
 
@@ -197,8 +197,7 @@ router.get('/:profile_id', function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-// router.post('/', authRequired, async (req, res) => {
-router.post('/', async (req, res) => {
+router.post('/', authRequired, async (req, res) => {
   const profile = req.body;
   if (profile) {
     try {
@@ -260,8 +259,7 @@ router.post('/', async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-// router.put('/:profile_id', authRequired, function (req, res) {
-router.put('/:id', function (req, res) {
+router.put('/:profile_id', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
     GroomerProfiles.findGroomerProByProID(profile.id)
@@ -287,57 +285,6 @@ router.put('/:id', function (req, res) {
         });
       });
   }
-});
-
-/**
- * @swagger
- * components:
- *  parameters:
- *    location_city:
- *      name: id
- *      in: path
- *      description: City of the profiles being returned
- *      required: true
- *      example: "Los Angeles"
- *      schema:
- *        type: string
- *
- * /groomer_profile/:location_city:
- *  get:
- *    description: Find profiles by city
- *    summary: Returns all profiles by city
- *    security:
- *      - okta: []
- *    tags:
- *      - groomer profile
- *    parameters:
- *      - $ref: '#/components/parameters/groomerProfileId'
- *    responses:
- *      200:
- *        description: An array of groomer profile objects
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/groomer_profiles'
- *      401:
- *        $ref: '#/components/responses/UnauthorizedError'
- *      404:
- *        description: 'City not found'
- */
-// router.get('/:location_city', authRequired, function (req, res) {
-router.get('/:location_city', function (req, res) {
-  const { location_city } = req.query;
-  GroomerProfiles.findByCity({ location_city })
-    .then((groomerProfiles) => {
-      if (groomerProfiles) {
-        res.status(200).json(groomerProfiles);
-      } else {
-        res.status(404).json({ error: 'City not found!' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
 });
 
 /**
@@ -371,8 +318,7 @@ router.get('/:location_city', function (req, res) {
  *                  $ref: '#/components/schemas/Groomer_Profile'
  */
 
-// router.delete('/:id', authRequired, function (req, res) {
-router.delete('/:id', function (req, res) {
+router.delete('/:id', authRequired, function (req, res) {
   const id = req.params.id;
   try {
     GroomerProfiles.findGroomerProByProID(id).then((profile) => {

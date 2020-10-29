@@ -27,15 +27,6 @@ const updateGroomerProByProID = async (id, groomerProfile) => {
     .returning('*');
 };
 
-// To get Groomer Profile by location_city
-const findByCity = async (queries = {}) => {
-  const query = db('groomer_profiles');
-  if (queries.location_city) {
-    query.where({ location_city: queries.location_city });
-  }
-  return query;
-};
-
 // Delete a groomer profile
 const remove = async (id) => {
   return await db('groomer_profiles').where({ id }).del();
@@ -46,6 +37,5 @@ module.exports = {
   updateGroomerProByProID,
   findAllGroomerPros,
   createGroomerPro,
-  findByCity,
   remove,
 };
