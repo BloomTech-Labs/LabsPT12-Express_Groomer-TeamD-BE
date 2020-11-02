@@ -53,21 +53,7 @@ You can find the deployed project at [🚫URL NAME GOES HERE](🚫copy and paste
 
 ## Authentication API here
 
-🚫Replace text below with a description and link to your API swagger docs
-
-Water's like me. It's laaazy ... Boy, it always looks for the easiest way to do things A little happy sunlight shining through there. Let all these little things happen. Don't fight them. Learn to use them. Even the worst thing we can do here is good.
-
-## Payment API here
-
-🚫Replace text below with a description of the API or delete
-
-This is the way you take out your flustrations. Get away from those little Christmas tree things we used to make in school. Isn't it fantastic that you can change your mind and create all these happy things? Everything's not great in life, but we can still find beauty in it.
-
-## Misc API here
-
-🚫Replace text below with a description of the API
-
-You can do anything your heart can imagine. In life you need colors. This is where you take out all your hostilities and frustrations. It's better than kicking the puppy dog around and all that so. I'm sort of a softy, I couldn't shoot Bambi except with a camera. Trees get lonely too, so we'll give him a little friend. We'll lay all these little funky little things in there.
+Link to API swagger docs: https://labspt12-express-groomer-d-api.herokuapp.com/api-docs/
 
 ## Getting Started
 
@@ -78,7 +64,7 @@ You can do anything your heart can imagine. In life you need colors. This is whe
     - 3000
     - 8000
     - 8080
-- `DATABASE_URL` - connection string for postgres database
+- `DATABASE_URL` - postgres://nqtpwjpw:aItZNJTlps6WwYuCCycFhnR3xRt4HmB4@isilo.db.elephantsql.com:5432/nqtpwjpw
 - `OKTA_URL_ISSUER` - The complete issuer URL for verifying okta access tokens. `https://example.okta.com/oauth2/default`
 - `OKTA_CLIENT_ID` - the okta client ID.
 
@@ -150,4 +136,4 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 ## Documentation
 
-See [Backend Documentation](🚫*link to your backend API SWAGGER DOCS here*) for details on the backend of our project.
+See [Backend Documentation](https://labspt12-express-groomer-d-api.herokuapp.com/api-docs/) for details on the backend of our project.
