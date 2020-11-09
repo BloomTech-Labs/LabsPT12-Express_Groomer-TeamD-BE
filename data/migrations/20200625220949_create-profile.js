@@ -52,9 +52,34 @@ exports.up = async function (knex) {
         .onUpdate('CASCADE');
       table.float('price').notNullable();
     });
+  await knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .createTable('user_pets', (table) => {
+      table.increments('id').notNullable().unique();
+      table.string('name').notNullable();
+      table.string('breed').notNullable();
+      table.string('type_of_pet').notNullable();
+      table.string('picture').unique().notNullable();
+    });
+  await knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .createTable('pet_pictures', (table) => {
+      table.increments('id').notNullable().unique();
+      table
+        .integer('user_pets_id')
+        .notNullable()
+        .references('id')
+        .inTable('user_pets')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+      table.string('title').notNullable();
+      table.string('description').notNullable();
+    });
 };
 
 exports.down = async function (knex) {
+  await knex.schema.dropTableIfExists('pet_pictures');
+  await knex.schema.dropTableIfExists('user_pets');
   await knex.schema.dropTableIfExists('groomer_services');
   await knex.schema.dropTableIfExists('services');
   await knex.schema.dropTableIfExists('groomer_profiles');
