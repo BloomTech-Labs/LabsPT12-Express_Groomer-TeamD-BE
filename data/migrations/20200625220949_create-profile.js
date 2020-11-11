@@ -14,9 +14,13 @@ exports.up = async function (knex) {
     .createTable('groomer_profiles', (table) => {
       table.increments('id').notNullable().unique().primary();
       table.string('business_name');
+      table.string('location_address');
       table.string('location_state');
       table.string('location_city');
       table.string('location_zip');
+      table.string('formatted_address');
+      table.double('latitude');
+      table.double('longitude');
       table.string('profile_picture');
       table.string('document');
       table
