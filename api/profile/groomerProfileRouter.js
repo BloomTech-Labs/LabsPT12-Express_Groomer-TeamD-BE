@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+// const authRequired = require('../middleware/authRequired');
 const GroomerProfiles = require('./groomerProfileModel');
 const router = express.Router();
 
@@ -98,7 +98,6 @@ const router = express.Router();
 // router.get('/', authRequired, function (req, res) {
 router.get('/', function (req, res) {
   const { location_city } = req.query;
-  console.log(location_city);
   GroomerProfiles.findAllGroomerPros({ location_city })
     .then((groomerProfiles) => {
       res.status(200).json(groomerProfiles);
@@ -197,7 +196,8 @@ router.get('/:profile_id', function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-router.post('/', authRequired, async (req, res) => {
+router.post('/', async (req, res) => {
+  // router.post('/', authRequired, async (req, res) => {
   const profile = req.body;
   if (profile) {
     try {
@@ -259,7 +259,8 @@ router.post('/', authRequired, async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-router.put('/:profile_id', authRequired, function (req, res) {
+router.put('/:profile_id', function (req, res) {
+  // router.put('/:profile_id', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
     GroomerProfiles.findGroomerProByProID(profile.id)
@@ -318,7 +319,8 @@ router.put('/:profile_id', authRequired, function (req, res) {
  *                  $ref: '#/components/schemas/Groomer_Profile'
  */
 
-router.delete('/:id', authRequired, function (req, res) {
+router.delete('/:id', function (req, res) {
+  // router.delete('/:id', authRequired, function (req, res) {
   const id = req.params.id;
   try {
     GroomerProfiles.findGroomerProByProID(id).then((profile) => {
