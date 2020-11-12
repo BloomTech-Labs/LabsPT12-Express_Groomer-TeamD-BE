@@ -58,22 +58,58 @@ exports.up = async function (knex) {
         .onUpdate('CASCADE');
       table.float('price');
     });
+  await knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .createTable('pet_types', (table) => {
+      table.string('pet_type').notNullable().unique().primary();
+    });
+  await knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .createTable('user_pets', (table) => {
+      table.increments('id').notNullable().unique();
+      table.string('name').notNullable();
+      table.string('breed').notNullable();
+      table
+        .string('pet_type')
+        .notNullable()
+        .references('pet_type')
+        .inTable('pet_types')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+    });
+  await knex.schema
+    .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .createTable('pet_pictures', (table) => {
+      table.increments('id').notNullable().unique();
+      table
+        .integer('user_pets_id')
+        .notNullable()
+        .references('id')
+        .inTable('user_pets')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+      table.string('title').notNullable();
+      table.string('description').notNullable();
+      table.string('picture').notNullable();
+    });
 };
 
 exports.down = async function (knex) {
+  await knex.schema.dropTableIfExists('pet_types');
+  await knex.schema.dropTableIfExists('pet_pictures');
+  await knex.schema.dropTableIfExists('user_pets');
   await knex.schema.dropTableIfExists('groomer_services');
   await knex.schema.dropTableIfExists('services');
   await knex.schema.dropTableIfExists('groomer_profiles');
   await knex.schema.dropTableIfExists('profiles');
 };
 
-// We need groomer_profile_document
-/// 1st field: groomer_profile_id
-/// 2nd field: table.increments
-/// 3rd field: document_url
-/// 4th field: document_name
-
-// We need groomer_profile_services
-/// 1st field: groomer_profile_id
-/// 2nd field: service_id
-/// 3rd field: price (need to ask the stake-holder)
+/// User Pets:
+// Get all the user's pets
+// Get a specific user's pet (get by user id)
+// Create a pet for a user
+// Update a user's pet (by user id)
+// Delete a user's pet (by user id)
+// Post a pet's picture (user pet's id)
+// Get a user pet's all pictures (by user id)
+// Delete a user pet's specific picture (user pet's id)
