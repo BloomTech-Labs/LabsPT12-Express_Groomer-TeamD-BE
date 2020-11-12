@@ -14,14 +14,19 @@ exports.up = async function (knex) {
     .createTable('groomer_profiles', (table) => {
       table.increments('id').notNullable().unique().primary();
       table.string('business_name');
+      table.string('location_address');
       table.string('location_state');
       table.string('location_city');
       table.string('location_zip');
+      table.string('formatted_address');
+      table.double('latitude');
+      table.double('longitude');
       table.string('profile_picture');
       table.string('document');
       table
         .string('profile_id')
         .notNullable()
+        .unique()
         .references('id')
         .inTable('profiles')
         .onDelete('CASCADE')
@@ -36,6 +41,14 @@ exports.up = async function (knex) {
   await knex.schema
     .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     .createTable('groomer_services', (table) => {
+      table.increments('id').notNullable().unique().primary();
+      table
+        .string('groomer_profile_id')
+        .notNullable()
+        .references('profile_id')
+        .inTable('groomer_profiles')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
       table
         .integer('service_id')
         .notNullable()
@@ -43,14 +56,7 @@ exports.up = async function (knex) {
         .inTable('services')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-      table
-        .integer('groomer_profile_id')
-        .notNullable()
-        .references('id')
-        .inTable('groomer_profiles')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      table.float('price').notNullable();
+      table.float('price');
     });
   await knex.schema
     .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
