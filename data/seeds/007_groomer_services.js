@@ -70,11 +70,6 @@ const groomer_services = [
     price: 700,
   },
   {
-    service_id: 15,
-    groomer_profile_id: '00ultx74kMUmEW8054x6',
-    price: 200,
-  },
-  {
     service_id: 7,
     groomer_profile_id: '00ultwqjtqt4VCcS24x6',
     price: 99.99,
@@ -88,11 +83,6 @@ const groomer_services = [
     service_id: 1,
     groomer_profile_id: '00ultwqjtqt4VCcS24x6',
     price: 250,
-  },
-  {
-    service_id: 15,
-    groomer_profile_id: '00ultwqjtqt4VCcS24x6',
-    price: 500,
   },
   {
     service_id: 2,
