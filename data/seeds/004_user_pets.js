@@ -1,5 +1,3 @@
-const faker = require('faker');
-
 const user_pets = [
   {
     name: 'Bella',
@@ -35,7 +33,7 @@ const user_pets = [
     name: 'Nala',
     breed: 'British Shorthair',
     pet_type: 'cat',
-  }
+  },
 ];
 
 exports.seed = function (knex) {
