@@ -1,5 +1,5 @@
 const express = require('express');
-const authRequired = require('../middleware/authRequired');
+// const authRequired = require('../middleware/authRequired');
 const GroomerProfiles = require('./groomerProfileModel');
 const router = express.Router();
 
@@ -18,6 +18,8 @@ const router = express.Router();
  *        - profile_picture
  *        - document
  *        - profile_id
+ *        - longitude
+ *        - latitude
  *      properties:
  *        id:
  *          type: int
@@ -43,6 +45,18 @@ const router = express.Router();
  *        profile_id:
  *          type: int
  *          description: This is the foriegn key that references to the profile id in the profile's table
+ *        latitude:
+ *          type: float
+ *          description: Latitude coordinate
+ *        longitude:
+ *          type: float
+ *          description: Longitude coordinate
+ *        location_address:
+ *          type: string
+ *          description: Street address
+ *        formattedAddress:
+ *          type: string
+ *          description: Full address
  *      example:
  *        id: 01
  *        business_name: "Happy Groomers"
@@ -52,6 +66,11 @@ const router = express.Router();
  *        profile_picture: "jpeg/png"
  *        document: "pdf"
  *        profile_id: "profile012"
+ *        location_address: "200 Larkin St"
+ *        distance: 2
+ *        longitude: -12.47210
+ *        latitude: 21.23810
+ *        formatted_address: "200 Larkin St, San Francisco, CA 99102"
  *
  *
  * groomer_profile:
@@ -76,16 +95,26 @@ const router = express.Router();
  *                - business_name: "Happy Groomers"
  *                - location_state: "California"
  *                - location_city: "San Francisco"
- *                - location_zip: "94112"
+ *                - location_zip: "99102"
  *                - profile_picture: "jpeg/png"
  *                - document: "pdf"
  *                - profile_id: "profile012"
+ *                - location_address: "200 Larkin St"
+ *                - distance: 2
+ *                - longitude: -12.47210
+ *                - latitude: 21.23810
+ *                - formatted_address: "200 Larkin St, San Francisco, CA 99102"
  *
  *                - id: 02
  *                - business_name: "Less Happy Groomers"
- *                - location_state: "Texas"
+ *                - location_state: "TX"
  *                - location_city: "San Antonio"
  *                - location_zip: "75263"
+ *                - location_address: "Larry Ave 2nd ST"
+ *                - distance: 2
+ *                - longitude: 12.47210
+ *                - latitude: -21.23810
+ *                - formatted_address: "Larry Ave 2nd ST, San Antonio TX, 75263"
  *                - profile_picture: "jpeg/png"
  *                - document: "pdf"
  *                - profile_id: "profile013"
@@ -97,9 +126,8 @@ const router = express.Router();
 
 // router.get('/', authRequired, function (req, res) {
 router.get('/', function (req, res) {
-  const { location_city } = req.query;
-  console.log(location_city);
-  GroomerProfiles.findAllGroomerPros({ location_city })
+  const { lat, lng, radius } = req.query;
+  GroomerProfiles.findAllGroomerPros({ radius, lat, lng })
     .then((groomerProfiles) => {
       res.status(200).json(groomerProfiles);
     })
@@ -197,7 +225,8 @@ router.get('/:profile_id', function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-router.post('/', authRequired, async (req, res) => {
+router.post('/', async (req, res) => {
+  // router.post('/', authRequired, async (req, res) => {
   const profile = req.body;
   if (profile) {
     try {
@@ -259,7 +288,8 @@ router.post('/', authRequired, async (req, res) => {
  *                profile:
  *                  $ref: '#/components/schemas/groomer_profiles'
  */
-router.put('/:profile_id', authRequired, function (req, res) {
+router.put('/:profile_id', function (req, res) {
+  // router.put('/:profile_id', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
     GroomerProfiles.findGroomerProByProID(profile.id)
@@ -318,7 +348,8 @@ router.put('/:profile_id', authRequired, function (req, res) {
  *                  $ref: '#/components/schemas/Groomer_Profile'
  */
 
-router.delete('/:id', authRequired, function (req, res) {
+router.delete('/:id', function (req, res) {
+  // router.delete('/:id', authRequired, function (req, res) {
   const id = req.params.id;
   try {
     GroomerProfiles.findGroomerProByProID(id).then((profile) => {
