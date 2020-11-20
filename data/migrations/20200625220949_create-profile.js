@@ -76,6 +76,13 @@ exports.up = async function (knex) {
         .inTable('pet_types')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
+      table
+        .string('user_id')
+        .notNullable()
+        .references('id')
+        .inTable('profiles')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
     });
   await knex.schema
     .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
@@ -95,9 +102,9 @@ exports.up = async function (knex) {
 };
 
 exports.down = async function (knex) {
-  await knex.schema.dropTableIfExists('pet_types');
   await knex.schema.dropTableIfExists('pet_pictures');
   await knex.schema.dropTableIfExists('user_pets');
+  await knex.schema.dropTableIfExists('pet_types');
   await knex.schema.dropTableIfExists('groomer_services');
   await knex.schema.dropTableIfExists('services');
   await knex.schema.dropTableIfExists('groomer_profiles');

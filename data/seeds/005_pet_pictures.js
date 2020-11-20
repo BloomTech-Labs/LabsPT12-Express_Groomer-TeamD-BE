@@ -4,7 +4,7 @@ let i = 1;
 const pictures = new Array(20).fill(0).map(() => {
   if (i == 3) i = 1;
   return {
-    user_pets_id: i,
+    user_pets_id: i++,
     title: 'dog.png',
     description: 'picture of dog',
     picture: faker.image.animals(),
