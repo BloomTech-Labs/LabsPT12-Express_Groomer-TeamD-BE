@@ -1,7 +1,7 @@
 const express = require('express');
 const userPetsModel = require('./userPetsModel');
 const router = express.Router();
-  
+
 /**
  * @swagger
  * /user_pets:
